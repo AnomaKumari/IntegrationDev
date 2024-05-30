@@ -4,65 +4,51 @@ pipeline {
     stages {
         stage('Build') {
             steps {
-                script {
-                    // Example tool: Maven
-                    echo 'Building the code...'
-                    // sh 'mvn clean package'
-                }
+                echo 'Building the code using Maven...'
+                // Example command to build using Maven
+                // sh 'mvn clean package'
             }
         }
         stage('Unit and Integration Tests') {
             steps {
-                script {
-                    // Example tool: JUnit for unit tests, Selenium for integration tests
-                    echo 'Running unit and integration tests...'
-                    // sh 'mvn test'
-                }
+                echo 'Running unit and integration tests using JUnit and Selenium...'
+                // Example command to run tests using Maven
+                // sh 'mvn test'
             }
         }
         stage('Code Analysis') {
             steps {
-                script {
-                    // Example tool: SonarQube
-                    echo 'Performing code analysis...'
-                    // sh 'sonar-scanner'
-                }
+                echo 'Performing code analysis using SonarQube...'
+                // Example command to run SonarQube scanner
+                // sh 'sonar-scanner'
             }
         }
         stage('Security Scan') {
             steps {
-                script {
-                    // Example tool: OWASP ZAP
-                    echo 'Performing security scan...'
-                    // sh 'zap-cli scan'
-                }
+                echo 'Performing security scan using OWASP ZAP...'
+                // Example command to run OWASP ZAP
+                // sh 'zap-cli scan'
             }
         }
         stage('Deploy to Staging') {
             steps {
-                script {
-                    // Example tool: AWS CLI for deploying to AWS EC2
-                    echo 'Deploying to staging...'
-                    // sh 'aws deploy create-deployment ...'
-                }
+                echo 'Deploying to staging server using AWS CLI...'
+                // Example command to deploy to AWS EC2
+                // sh 'aws deploy create-deployment --application-name <app-name> --deployment-group-name <group-name> --s3-location bucket=<bucket-name>,bundleType=zip,key=<key>'
             }
         }
         stage('Integration Tests on Staging') {
             steps {
-                script {
-                    // Example tool: Selenium
-                    echo 'Running integration tests on staging...'
-                    // sh 'mvn verify -Pstaging'
-                }
+                echo 'Running integration tests on staging using Selenium...'
+                // Example command to run integration tests on staging
+                // sh 'mvn verify -Pstaging'
             }
         }
         stage('Deploy to Production') {
             steps {
-                script {
-                    // Example tool: AWS CLI for deploying to AWS EC2
-                    echo 'Deploying to production...'
-                    // sh 'aws deploy create-deployment ...'
-                }
+                echo 'Deploying to production server using AWS CLI...'
+                // Example command to deploy to AWS EC2
+                // sh 'aws deploy create-deployment --application-name <app-name> --deployment-group-name <group-name> --s3-location bucket=<bucket-name>,bundleType=zip,key=<key>'
             }
         }
     }
@@ -70,11 +56,17 @@ pipeline {
     post {
         always {
             script {
-                // Send email notifications
-                mail to: 'developer@example.com',
-                     subject: "Pipeline ${currentBuild.currentResult}: ${env.JOB_NAME} ${env.BUILD_NUMBER}",
-                     body: "Pipeline ${env.JOB_NAME} build ${env.BUILD_NUMBER} finished with status: ${currentBuild.currentResult}\nCheck console output at ${env.BUILD_URL}",
-                     attachLog: true
+                emailext(
+                    to: 'developer@example.com',
+                    subject: "Pipeline ${currentBuild.currentResult}: ${env.JOB_NAME} ${env.BUILD_NUMBER}",
+                    body: """
+                    Build Status: ${currentBuild.currentResult}
+                    Job: ${env.JOB_NAME} 
+                    Build Number: ${env.BUILD_NUMBER}
+                    Check console output at ${env.BUILD_URL}
+                    """,
+                    attachLog: true
+                )
             }
         }
     }
