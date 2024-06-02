@@ -57,7 +57,7 @@ pipeline {
         always {
             script {
                 emailext(
-                    to: 'codmobiledev@gmail.com',
+                    to: 'anomaakd321@gmail.com',
                     subject: "Pipeline ${currentBuild.currentResult}: ${env.JOB_NAME} ${env.BUILD_NUMBER}",
                     body: """
                     Build Status: ${currentBuild.currentResult}
